@@ -1,9 +1,10 @@
 // Load in dependencies
 var Spritesmith = require('spritesmith');
 var fs = require('fs');
+const path = require('path');
 
 const pngPath = 'IMAGE_NYC/pngs';
-const output = 'image_sprites'
+const output = 'IMAGE_NYC/sprites/image_sprite';
 
 fs.readdir(pngPath, (err, sprites) => {
 
@@ -21,12 +22,13 @@ fs.readdir(pngPath, (err, sprites) => {
 
     result.coordinates; // Object mapping filename to {x, y, width, height} of image
     result.properties; // Object with metadata about spritesheet {width, height}
+    const writePath = path.join(__dirname, output);
 
-    const destination = fs.createWriteStream(output+".png")
+    const destination = fs.createWriteStream(writePath+".png")
 
     result.image.pipe(destination);
 
-    fs.writeFile(output+".json", JSON.stringify(result.coordinates), (err) => {
+    fs.writeFile(writePath+".json", JSON.stringify(result.coordinates), (err) => {
       if (err) {
         console.log('Failed to write updated data to file');
         return;
