@@ -22,18 +22,37 @@ fs.readdir(pngPath, (err, sprites) => {
 
     result.coordinates; // Object mapping filename to {x, y, width, height} of image
     result.properties; // Object with metadata about spritesheet {width, height}
-    const writePath = path.join(__dirname, output);
+    let writePath = path.join(__dirname, output);
+    let _json = result.coordinates;
 
-    const destination = fs.createWriteStream(writePath+".png")
+    Object.keys(_json).forEach((old_key)=>{
+      _json[old_key].pixelRatio = 1;
+
+      let new_key = old_key.replace(pngPath,"").replace(".png","").replace("/","");
+
+      if (old_key !== new_key) {
+        Object.defineProperty(_json, new_key,
+            Object.getOwnPropertyDescriptor(_json, old_key));
+        delete _json[old_key];
+    }
+    })
+
+    function writeOut(_writePath){
+
+    const destination = fs.createWriteStream(_writePath+".png")
 
     result.image.pipe(destination);
 
-    fs.writeFile(writePath+".json", JSON.stringify(result.coordinates), (err) => {
+    fs.writeFile(_writePath+".json", JSON.stringify(result.coordinates, null, '\t'), (err) => {
       if (err) {
         console.log('Failed to write updated data to file');
         return;
       }
       console.log('Updated file successfully');
     });
+    }
+
+    writeOut(writePath)
+    writeOut(writePath+'@2x')
   });
 });
