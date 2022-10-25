@@ -28,7 +28,7 @@ fs.readdir(pngPath, (err, sprites) => {
     Object.keys(_json).forEach((old_key)=>{
       _json[old_key].pixelRatio = 1;
 
-      let new_key = old_key.replace(pngPath,"").replace(".png","").replace("/","").replace("  "," ");
+      let new_key = old_key.replace(pngPath,"").replace(".png","").replace(".svg","").replace("/","").replace("  "," ");
 
       if (old_key !== new_key) {
         Object.defineProperty(_json, new_key,
