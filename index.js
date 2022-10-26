@@ -3,8 +3,8 @@ var Spritesmith = require('spritesmith');
 var fs = require('fs');
 const path = require('path');
 
-const pngPath = 'IMAGE_NYC/pngs';
-const output = 'IMAGE_NYC/sprites/image_sprite';
+const pngPath = 'US_Redistricting/sprite_images';
+const output = 'US_Redistricting/sprites/image_sprite';
 
 fs.readdir(pngPath, (err, sprites) => {
 
